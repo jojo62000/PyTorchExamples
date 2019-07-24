@@ -1,9 +1,5 @@
 
-# coding: utf-8
-
-# In[151]:
-
-
+#Import required libraries
 import torch as tch
 import torch.nn as nn
 import numpy as np
@@ -11,10 +7,8 @@ from sklearn.metrics import confusion_matrix
 
 #Create 500 observations with randn | This will be tagged as 0
 X1 = tch.randn(3000, 32)
-
 #Create another 500 observations with randn slightly different from X1| This will be tagged as 0
 X2 = tch.randn(3000, 32) + 0.5
-
 #Ccombined X1 and X2
 X = tch.cat([X1, X2], dim=0)
 
@@ -32,13 +26,11 @@ random_seed= 2019
 dataset_size = X.shape[0]
 indices = list(range(dataset_size))
 split = int(np.floor(validation_split * dataset_size))
-
 np.random.seed(random_seed)
 np.random.shuffle(indices)
 
 #Create train and validation indices
 train_indices, val_indices = indices[split:], indices[:split]
-
 #Create train and validation dataset
 X_train, x_test = X[train_indices], X[val_indices]
 Y_train, y_test = Y[train_indices], Y[val_indices]
@@ -48,9 +40,6 @@ print("X_train.shape:",X_train.shape)
 print("x_test.shape:",x_test.shape)
 print("Y_train.shape:",Y_train.shape)
 print("y_test.shape:",y_test.shape)
-
-
-# In[152]:
 
 
 #Define a neural network with 2 hidden layers and 1 output layer
@@ -79,12 +68,8 @@ class NeuralNetwork(nn.Module):
     
 
 model = NeuralNetwork()
-loss_function = nn.BCELoss()
+loss_function = nn.BCELoss()  #Binary Crosss Entropy Loss
 optimizer = tch.optim.Adam(model.parameters(),lr= 0.001)
-
-
-# In[153]:
-
 
 num_epochs = 10
 batch_size=16
@@ -119,12 +104,6 @@ for epoch in range(num_epochs):
         train_loss += loss.item() * batch_size
 
     print("Epoch: {} - Loss:{:.4f}".format(epoch+1,train_loss/X_train.shape[0] ))
-    
-    
-
-
-# In[154]:
-
 
 #Predict
 y_test_pred = model(x_test)
